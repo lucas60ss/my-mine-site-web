@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const jsonData = require("./singer.json");
-const { singer } = jsonData;
+const { singers } = jsonData;
 
 const app = express();
 
@@ -14,10 +14,24 @@ app.get("/", (req, res) => {
 app.get("/singer/:id.html", (req, res) => {
   const { id } = req.params;
 
-  let result = singer.find((singer) => parseInt(id) === singer.id);
+  let result = singers.find((singer) => parseInt(id) === singer.id);
 
   if (result) {
-    res.status(200).json(result);
+    res.status(200).send(`<!DOCTYPE html> 
+    <html lang="en">
+
+    <head>
+         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${result.singer_name} Page</title>
+     </head>
+
+     <body>
+         <h1>${result.singer_name}</h1>
+         <img src="${result.singer_img}" alt="">
+     </body>
+
+     </html>`);
   } else {
     res.status(404).json({ error: "找不到" });
   }
